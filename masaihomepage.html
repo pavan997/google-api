@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+</head>
+<style>
+    .wrapper{
+        display: flex;
+        
+    }
+    .left{
+        width:200px;
+        
+    }
+    .right{
+        width:200px;
+    }
+    .top1{
+        margin-bottom:15px;
+    }
+    .top2{
+        margin-bottom: 30px;
+        font-size: 20px;
+    }
+    a{
+        text-decoration: none;
+    }
+    #navbar > img{
+        margin: 22px 20px 15px 0;
+        
+    }
+    input{
+        padding-left:18px;
+        margin-left: 30px;
+        width: 650px;
+        height: 42px;
+        font-size: 17px;
+        /* position: absolute;
+        top:25px; */
+        margin-top: 20px;
+        border-radius: 20px;
+        box-shadow:0px 1px 5px 3px rgba(0,0,0,0.22);
+        outline:none;
+        border:none;
+    }
+    #navbar{
+        display: flex;
+    }
+    .icon1{
+        color:blue;
+        margin: 27px 2px 0px -70px;
+    }
+    .icon2{
+        color:blue;
+        margin: 27px 2px 0px 5px;
+        cursor: pointer;
+    }
+     .icon3{
+        margin: 28px 2px 0px 300px;
+     }
+     .icon4{
+        margin: 28px 2px 0px 30px;
+     }
+     .icon5{
+        margin: 28px 2px 0px 30px;
+     }
+    
+
+</style>
+<body>
+    <div id="navbar">
+        <img src="https://i.ibb.co/GFVNzdp/google.png" alt="google" width=90 height=34>
+         <input type="text" id="inp">
+         <div class="icon1"><i class="material-icons">mic</i></div>
+         <div class="icon2" onclick="search()"><i class="material-icons">search</i></div>
+         
+         <div class="icon3"><i class="material-icons">settings</i></div>
+         <div class="icon4"><i class="material-icons">apps</i></div>
+         <div class="icon5"><i class="material-icons">account_circle</i></div>
+        
+
+         <!-- <button onclick="search()">Search</button> -->
+    </div>
+    <div class='wrapper'>
+    <div class='left'></div>
+    <div id='container'></div>
+    <div class='right'></div>
+    </div>
+</body>
+</html>
+
+<script>
+async function search(){
+    let sr = document.getElementById('inp').value;
+    let res = await fetch(`http://api.serpstack.com/search?access_key=6bf947e9ccf80927ffecae1c4133c511&query=${sr}`);
+
+    let data = await res.json();
+
+    console.log(data);
+
+    showResults(data);
+}
+
+    let showResults = ({ organic_results, search_information }) => {
+        container.innerHTML = ""
+        container.innerHTML = `
+       <p>About ${search_information.total_results} results (${search_information.time_taken_displayed}seconds)</p>`
+
+        organic_results.forEach(({ title, url,displayed_url }) => {
+            let div_1 = document.createElement("div");
+            let div_2 = document.createElement("div");
+            div_1.innerHTML = displayed_url;
+            div_1.setAttribute('class','top1')
+            div_2.innerHTML = `<a href="${url}">${title}</a>`
+            div_2.setAttribute('class','top2')
+            container.append(div_1,div_2)
+        })
+    }
+
+
+</script>
